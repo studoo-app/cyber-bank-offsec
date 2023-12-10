@@ -1,0 +1,64 @@
+version: "3.8"
+services:
+  ##########################
+  # CONTENEURS APPLICATIFS #
+  ##########################
+
+  # attacker
+  attacker:
+    container_name: attacker
+    image: debian:12
+    tty: true
+    networks:
+      - bank-offsec
+    volumes:
+      - ./files:/home/documents
+
+  # target-site
+  target-site:
+    container_name: target-site
+    build: ./docker/php
+    ports:
+      - "8000:80"
+    volumes:
+      - ./docker/php/vhosts:/etc/apache2/sites-enabled
+      - ./app:/var/www
+    restart: always
+    networks:
+      - bank-offsec
+
+
+  ##########################
+  # CONTENEURS SERVICES    #
+  ##########################
+
+  #Base de données Mysql
+  # si vous souhaitez utilisé l'image: mysql:5.7, decommenté la ligne platform
+  db:
+    container_name: db
+    image: mariadb:10.5.8 # mysql:5.7
+    # platform: linux/amd64
+    restart: always
+    volumes:
+      - ./data/db-data:/var/lib/mysql
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+    networks:
+      - bank-offsec
+  #PHP My Admin
+  phpmyadmin:
+    container_name: pma
+    image: phpmyadmin/phpmyadmin
+    restart: always
+    depends_on:
+      - db
+    ports:
+      - "8081:80"
+    environment:
+      PMA_HOST: db
+    networks:
+      - bank-offsec
+
+# Définition de réseaux
+networks:
+  bank-offsec:

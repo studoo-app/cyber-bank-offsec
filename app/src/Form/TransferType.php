@@ -14,9 +14,24 @@ class TransferType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('srcAccountNumber',TextType::class)
-            ->add('destAccountNumber',TextType::class)
-            ->add('amount',IntegerType::class)
+            ->add('srcAccountNumber',TextType::class,[
+                'label'=>"Depuis le compte N°",
+                'attr'=>[
+                    'placeholder'=>'1234'
+                ]
+            ])
+            ->add('destAccountNumber',TextType::class,[
+                'label'=>"Vers le compte N°",
+                'attr'=>[
+                    'placeholder'=>'5678'
+                ]
+            ])
+            ->add('amount',IntegerType::class,[
+                'label'=>"Montant",
+                'attr'=>[
+                    'placeholder'=>'200'
+                ]
+            ])
         ;
     }
 

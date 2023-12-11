@@ -12,8 +12,8 @@ services:
     networks:
       - bank-offsec-external
     volumes:
-      - ./files:/home/documents
-      - ./scripts:/home/scripts
+      - ./docker/files:/home/documents
+      - ./docker/scripts:/home/scripts
 
   # target-site
   target-site:
@@ -48,18 +48,18 @@ services:
     networks:
       - bank-offsec-internal
   #PHP My Admin
-  phpmyadmin:
-    container_name: pma
-    image: phpmyadmin/phpmyadmin
-    restart: always
-    depends_on:
-      - db
-    ports:
-      - "8081:80"
-    environment:
-      PMA_HOST: db
-    networks:
-      - bank-offsec-internal
+#  phpmyadmin:
+#    container_name: pma
+#    image: phpmyadmin/phpmyadmin
+#    restart: always
+#    depends_on:
+#      - db
+#    ports:
+#      - "8081:80"
+#    environment:
+#      PMA_HOST: db
+#    networks:
+#      - bank-offsec-internal
 
 # Définition de réseaux
 networks:

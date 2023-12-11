@@ -61,7 +61,7 @@ class AppFixtures extends Fixture
         $shadow = new User();
         $shadow->setEmail("john.doe@mail.dev");
         $shadow->setName("John doe");
-        $shadow->setPassword($this->hasher->hashPassword($client,"password"));
+        $shadow->setPassword($this->hasher->hashPassword($client,"shadow-account"));
         $shadow->setRoles(["ROLE_CLIENT"]);
         $shadow->setAccount($this->makeAccount($faker,false));
         $manager->persist($shadow);

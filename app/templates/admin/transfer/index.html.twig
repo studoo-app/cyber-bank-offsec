@@ -7,24 +7,43 @@
         <div class="col-md-6 offset-md-3">
             <div class="card">
                 <div class="card-header h1 text-center">Virement</div>
-                <div class="card-body">
-                    <form>
-                        <div class="mb-3">
-                            <label for="fromAccount" class="form-label">De compte</label>
-                            <input type="text" class="form-control" id="fromAccount" placeholder="Numéro de compte source">
+                    {{ form_start(form) }}
+                        <div class="card-body">
+                            {{ form_widget(form) }}
                         </div>
-                        <div class="mb-3">
-                            <label for="toAccount" class="form-label">Vers compte</label>
-                            <input type="text" class="form-control" id="toAccount" placeholder="Numéro de compte destination">
+                        <div class="card-footer d-flex justify-content-center">
+                            <button type="submit" class="btn btn-primary btn-block">Effectuer le virement</button>
                         </div>
-                        <div class="mb-3">
-                            <label for="amount" class="form-label">Montant</label>
-                            <input type="text" class="form-control" id="amount" placeholder="Montant à transférer">
-                        </div>
-                        <button type="submit" class="btn btn-primary btn-block">Effectuer le virement</button>
-                    </form>
-                </div>
+                    {{ form_end(form) }}
             </div>
         </div>
     </div>
+    <div class="row mt-2">
+        <div class="col-md-6 offset-md-3">
+            {% for label, messages in app.flashes(['success']) %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ label }} alert-dismissible fade show" role="alert">
+                        <p>{{ message }}</p>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endfor %}
+        </div>
+    </div>
 {% endblock %}
+
+{#                    <form>#}
+{#                        <div class="mb-3">#}
+{#                            <label for="fromAccount" class="form-label">De compte</label>#}
+{#                            <input type="text" class="form-control" id="fromAccount" placeholder="Numéro de compte source">#}
+{#                        </div>#}
+{#                        <div class="mb-3">#}
+{#                            <label for="toAccount" class="form-label">Vers compte</label>#}
+{#                            <input type="text" class="form-control" id="toAccount" placeholder="Numéro de compte destination">#}
+{#                        </div>#}
+{#                        <div class="mb-3">#}
+{#                            <label for="amount" class="form-label">Montant</label>#}
+{#                            <input type="text" class="form-control" id="amount" placeholder="Montant à transférer">#}
+{#                        </div>#}
+{#                        <button type="submit" class="btn btn-primary btn-block">Effectuer le virement</button>#}
+{#                    </form>#}

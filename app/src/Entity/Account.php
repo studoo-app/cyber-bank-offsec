@@ -92,7 +92,7 @@ class Account
     {
         $this->balance = $this->operations->reduce(function(int $accumulator,Operation $operation){
             return $accumulator + $operation->getAmount();
-        },$this->balance);
+        },0);
 
         return $this;
     }

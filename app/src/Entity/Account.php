@@ -21,7 +21,7 @@ class Account
     #[ORM\Column]
     private ?int $balance = null;
 
-    #[ORM\OneToMany(mappedBy: 'account', targetEntity: Operation::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'account', targetEntity: Operation::class, cascade: ["persist"], orphanRemoval: true)]
     private Collection $operations;
 
     public function __construct()
@@ -84,6 +84,15 @@ class Account
                 $operation->setAccount(null);
             }
         }
+
+        return $this;
+    }
+
+    public function calculateBalance(): static
+    {
+        $this->balance = $this->operations->reduce(function(int $accumulator,Operation $operation){
+            return $accumulator + $operation->getAmount();
+        },$this->balance);
 
         return $this;
     }

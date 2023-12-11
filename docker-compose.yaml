@@ -10,7 +10,7 @@ services:
     image: debian:12
     tty: true
     networks:
-      - bank-offsec
+      - bank-offsec-external
     volumes:
       - ./files:/home/documents
       - ./scripts:/home/scripts
@@ -26,7 +26,8 @@ services:
       - ./app:/var/www
     restart: always
     networks:
-      - bank-offsec
+      - bank-offsec-external
+      - bank-offsec-internal
 
 
   ##########################
@@ -45,7 +46,7 @@ services:
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
     networks:
-      - bank-offsec
+      - bank-offsec-internal
   #PHP My Admin
   phpmyadmin:
     container_name: pma
@@ -58,8 +59,9 @@ services:
     environment:
       PMA_HOST: db
     networks:
-      - bank-offsec
+      - bank-offsec-internal
 
 # Définition de réseaux
 networks:
-  bank-offsec:
+  bank-offsec-internal:
+  bank-offsec-external:

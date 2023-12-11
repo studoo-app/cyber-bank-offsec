@@ -24,14 +24,13 @@ class TransferController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $srcAccount = $manager->getRepository(Account::class)->findOneBy(["number"=>$transfer->getSrcAccountNumber()]);
-            $destAccount = $manager->getRepository(Account::class)->findOneBy(["number"=>$transfer->getDestAccountNumber()]);
+            $srcAccount = $manager->getRepository(Account::class)
+                ->findOneBy(["number"=>$transfer->getSrcAccountNumber()]);
+            $destAccount = $manager->getRepository(Account::class)
+                ->findOneBy(["number"=>$transfer->getDestAccountNumber()]);
 
             $srcAccount->addOperation($this->buildOperation($srcAccount,$transfer->getAmount(),true));
-            $srcAccount->calculateBalance();
             $destAccount->addOperation($this->buildOperation($destAccount,$transfer->getAmount()));
-            $destAccount->calculateBalance();
-
 
             $manager->persist($srcAccount);
             $manager->persist($destAccount);

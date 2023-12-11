@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} - Mon compte{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-6 offset-md-3 mt-5">
+            <div class="card">
+                <div class="card-body">
+                    <h1 class="card-title text-center">Mon Compte</h1>
+                    <h4 class="card-subtitle mb-4 text-muted">Numéro de compte: 123456789</h4>
+                    <div class="mb-4">
+                        <h5>Solde du compte: $1,000,000.00</h5>
+                    </div>
+                    <h5>Dernières opérations:</h5>
+                    <ul class="list-group">
+                        <li class="list-group-item">Dépôt - $10,000.00</li>
+                        <li class="list-group-item">Retrait - $5,000.00</li>
+                        <li class="list-group-item">Achat - $2,000.00</li>
+                        <!-- Ajoutez d'autres opérations ici -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

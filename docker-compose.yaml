@@ -13,6 +13,7 @@ services:
       - bank-offsec
     volumes:
       - ./files:/home/documents
+      - ./scripts:/home/scripts
 
   # target-site
   target-site:

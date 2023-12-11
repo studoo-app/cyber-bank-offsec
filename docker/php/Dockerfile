@@ -1,6 +1,4 @@
 FROM php:8.2-apache
-#FROM php:8.0-apache
-#FROM php:7.4-apache
 
 RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 RUN echo 'deb [trusted=yes] https://repo.symfony.com/apt/ /' | tee /etc/apt/sources.list.d/symfony-cli.list
@@ -18,10 +16,7 @@ RUN apt-get update \
      libxslt-dev \
      libssh-dev \
      symfony-cli \
-     librabbitmq-dev
-
-#RUN curl -sL https://deb.nodesource.com/setup_14.x | bash
-#RUN apt-get install --yes nodejs
+     unzip \
 
 RUN echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && \
     echo "fr_FR.UTF-8 UTF-8" >> /etc/locale.gen && \
@@ -38,17 +33,9 @@ RUN docker-php-ext-configure intl
 RUN docker-php-ext-install pdo pdo_mysql gd opcache intl zip calendar dom mbstring zip gd xsl
 RUN pecl install apcu pcov xdebug && docker-php-ext-enable apcu pcov xdebug
 
-##installation et activation de mongoDb
-#RUN echo "Installation et activation de l'extension MongoDb"
-#RUN yes | pecl install mongodb && docker-php-ext-enable mongodb
 #Installation et activation de amqp
 RUN echo "Installation et activation de l'extension Amqp"
 RUN pecl install amqp && docker-php-ext-enable amqp
-
-# Configuration du compte Git
-#RUN echo "Configuration du compte Git"
-#RUN git config --global user.email "you@example.com" \
-#    && git config --global user.name "Your Name"
 
 #Ouverture des droits de lecture, modification et execution
 RUN echo "Ouverture des droits de lecture, modification et execution"

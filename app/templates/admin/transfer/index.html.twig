@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent()}} - Virement{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-6 offset-md-3 mt-5">
+            <div class="card">
+                <div class="card-body">
+                    <h1 class="card-title text-center">Virement</h1>
+                    <form>
+                        <div class="mb-3">
+                            <label for="fromAccount" class="form-label">De compte</label>
+                            <input type="text" class="form-control" id="fromAccount" placeholder="Numéro de compte source">
+                        </div>
+                        <div class="mb-3">
+                            <label for="toAccount" class="form-label">Vers compte</label>
+                            <input type="text" class="form-control" id="toAccount" placeholder="Numéro de compte destination">
+                        </div>
+                        <div class="mb-3">
+                            <label for="amount" class="form-label">Montant</label>
+                            <input type="text" class="form-control" id="amount" placeholder="Montant à transférer">
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">Effectuer le virement</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

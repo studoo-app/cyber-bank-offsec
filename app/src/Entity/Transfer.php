@@ -2,7 +2,9 @@
 
 namespace App\Entity;
 use App\Validator\AccountNumberIsValid;
+use App\Validator\IsTransferSuspicious;
 use Symfony\Component\Validator\Constraints as Assert;
+#[IsTransferSuspicious]
 class Transfer
 {
     #[Assert\NotBlank]

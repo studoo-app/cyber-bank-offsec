@@ -18,7 +18,13 @@
                     {% for flag in flags %}
                         <li class="list-group-item d-flex justify-content-between">
                             <p class="text-muted"> {{ flag.date }}</p>
-                            <span class="badge bg-success text-center my-auto">{{ flag.flag }}</span>
+                            {% if flag.flag is same as "CTF_SUSPICIOUS_TRANSFER" %}
+                                <span class="badge bg-warning text-center my-auto">{{ flag.flag }}</span>
+                            {% elseif flag.flag is same as "CTF_INTRUSION_DETECTED" %}
+                                <span class="badge bg-danger text-center my-auto">{{ flag.flag }}</span>
+                            {% else %}
+                                <span class="badge bg-success text-center my-auto">{{ flag.flag }}</span>
+                            {% endif %}
                         </li>
                     {% endfor %}
                 </ul>

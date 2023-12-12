@@ -12,11 +12,13 @@ class CaptureTheFlagService
     const FLAG_TRANSFER_PAGE_FOUND = "CTF_TRANSFER_PAGE_FOUND";
     const FLAG_FIRST_TRANSFER = "CTF_FIRST_TRANSFER";
     const FLAG_AMOUNT_OBJECTIVE_COMPLETE = "CTF_AMOUNT_OBJECTIVE_COMPLETE";
+    const FLAG_SUSPICIOUS_TRANSFER = "CTF_SUSPICIOUS_TRANSFER";
+    const FLAG_INTRUSION_DETECTED = "CTF_INTRUSION_DETECTED";
 
     public function __construct(
-        private string          $rootDir,
-        private LoggerInterface $ctfLogger,
-        private UserRepository  $userRepository,
+        private readonly string          $rootDir,
+        private readonly LoggerInterface $ctfLogger,
+        private readonly UserRepository  $userRepository,
     )
     {
     }
@@ -74,6 +76,11 @@ class CaptureTheFlagService
             $this->triggerTransferPageFoundCTF($log);
             $this->triggerApiPageFoundCTF($log);
         }
+
+        if($log['type'] === "ALERT"){
+            $this->triggerSuspiciousTransferCTF();
+            $this->triggerIntrusionDetectedCTF();
+        }
     }
 
     private function triggerTransferPageFoundCTF(array $log): void
@@ -98,7 +105,7 @@ class CaptureTheFlagService
         ){
             $this->save([
                 "date"=>(new \DateTimeImmutable('now',new \DateTimeZone('Europe/Paris')))->format('d/m/Y H:i:s'),
-                "flag"=>self::FLAG_API_PAGE_FOUND
+                "flag"=>self::FLAG_API_PAGE_FOUND,
             ]);
         }
     }
@@ -137,5 +144,25 @@ class CaptureTheFlagService
 
     }
 
+    private function triggerSuspiciousTransferCTF(){
+        $this->save([
+            "date"=>(new \DateTimeImmutable('now',new \DateTimeZone('Europe/Paris')))->format('d/m/Y H:i:s'),
+            "flag"=>self::FLAG_SUSPICIOUS_TRANSFER
+        ]);
+    }
 
+    private function triggerIntrusionDetectedCTF(): void
+    {
+        $flags = $this->getFlags();
+        $isLimitReached = count(array_filter($flags,function(array $item){
+                return $item['flag'] === self::FLAG_SUSPICIOUS_TRANSFER;
+            })) === 5;
+
+        if($isLimitReached){
+            $this->save([
+                "date"=>(new \DateTimeImmutable('now',new \DateTimeZone('Europe/Paris')))->format('d/m/Y H:i:s'),
+                "flag"=>self::FLAG_INTRUSION_DETECTED
+            ]);
+        }
+    }
 }

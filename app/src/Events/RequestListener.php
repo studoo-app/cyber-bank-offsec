@@ -2,11 +2,7 @@
 
 namespace App\Events;
 
-use App\Entity\Operation;
 use App\Service\CaptureTheFlagService;
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Event\PostPersistEventArgs;
-use Doctrine\ORM\Events;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
 
@@ -22,6 +18,7 @@ readonly class RequestListener
 
     public function onRequest(ControllerEvent $event):void
     {
+
         if( in_array($event->getRequest()->getPathInfo(),["/api/extract","/admin/transfer"])){
             $this->service->logArray([
                 "type"=>"ACCESS",

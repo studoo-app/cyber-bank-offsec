@@ -6,6 +6,7 @@ use App\Entity\Account;
 use App\Entity\Operation;
 use App\Entity\Transfer;
 use App\Form\TransferType;
+use App\Service\CaptureTheFlagService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,6 +15,13 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class TransferController extends AbstractController
 {
+
+    public function __construct(
+        private readonly CaptureTheFlagService $service
+    )
+    {
+    }
+
     #[Route('/admin/transfer', name: 'app_admin_transfer', methods: ['GET', 'POST'])]
     public function transfer(Request $request,EntityManagerInterface $manager): Response
     {
@@ -41,10 +49,10 @@ class TransferController extends AbstractController
             return $this->redirectToRoute('app_admin_transfer', [], Response::HTTP_SEE_OTHER);
         }
 
-
         return $this->render('admin/transfer/index.html.twig', [
             'transfer' => $transfer,
             'form' => $form,
+            'flags'=>$this->service->getFlags()
         ]);
     }
 

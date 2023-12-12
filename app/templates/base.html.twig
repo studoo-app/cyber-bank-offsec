@@ -36,6 +36,7 @@
                         <a class="nav-link" href="{{ path('app_admin_transfer') }}">Virement</a>
                     </li>
                     {%  endif %}
+                    {% include('ctf/_flags.html.twig') %}
                 </ul>
             </div>
             {%  if app.user %}
@@ -44,6 +45,7 @@
                 </div>
             {% endif %}
         </div>
+
     </nav>
     <div class="container">
         {% block body %}{% endblock %}

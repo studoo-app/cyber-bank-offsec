@@ -3,6 +3,7 @@
 namespace App\Events;
 
 use App\Entity\Operation;
+use App\Service\CaptureTheFlagService;
 use Doctrine\Bundle\DoctrineBundle\Attribute\AsEntityListener;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\PostPersistEventArgs;
@@ -13,7 +14,8 @@ readonly class OperationListener
 {
 
     public function __construct(
-        private EntityManagerInterface $manager
+        private EntityManagerInterface $manager,
+        private CaptureTheFlagService $service
     )
     {
     }
@@ -24,5 +26,13 @@ readonly class OperationListener
         $operation->getAccount()->calculateBalance();
         $this->manager->persist($operation->getAccount());
         $this->manager->flush();
+        $this->service->logArray([
+            "type"=>"OPERATION",
+            "date"=>(new \DateTimeImmutable('now',new \DateTimeZone('Europe/Paris')))->format('d/m/Y H:i:s'),
+            "accountNumber" => $operation->getAccount()->getNumber(),
+            "balance"=>$operation->getAccount()->getBalance(),
+            "amount"=>$operation->getAmount(),
+        ]);
     }
+
 }

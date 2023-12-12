@@ -47,4 +47,5 @@ Afin de prouver vos actions,vous devrez fournir:
 - Création de la base -> `docker exec -it target-site symfony d:d:c`
 - Migraiton de la base -> `docker exec -it target-site symfony d:m:m`
 - Déploiement du jeu de test -> `docker exec -it target-site symfony d:f:l`
+- Suppression du fichier de tracking de progression -> `docker exec -it target-site cp /dev/null var/log/ctf.log`
 

@@ -67,6 +67,7 @@ class CaptureTheFlagService
     private function triggerCTFs(array $log){
         if($log['type'] === "OPERATION"){
             $this->triggerFirstTransferCTF($log);
+            $this->triggerTransferAmountObjectiveCTF();
         }
 
         if($log['type'] === "ACCESS"){
@@ -89,7 +90,8 @@ class CaptureTheFlagService
 
     }
 
-    private function triggerApiPageFoundCTF(array $log){
+    private function triggerApiPageFoundCTF(array $log): void
+    {
         if( $log['type'] === 'ACCESS' &&
             $log['path'] === '/api/extract' &&
             !$this->isFlagAlreadyExist(self::FLAG_API_PAGE_FOUND)
@@ -118,6 +120,22 @@ class CaptureTheFlagService
         }
     }
 
+    private function triggerTransferAmountObjectiveCTF()
+    {
+        $shadowAccount = $this->userRepository
+            ->findOneBy(["email"=>$_ENV["SHADOW_ACCOUNT_MAIL"]])->getAccount();
+
+        if(
+            $shadowAccount->getBalance() >= $_ENV["CTF_OBJECTIVE"] &&
+            !$this->isFlagAlreadyExist(self::FLAG_AMOUNT_OBJECTIVE_COMPLETE)
+        ){
+            $this->save([
+                "date"=>(new \DateTimeImmutable('now',new \DateTimeZone('Europe/Paris')))->format('d/m/Y H:i:s'),
+                "flag"=>self::FLAG_AMOUNT_OBJECTIVE_COMPLETE
+            ]);
+        }
+
+    }
 
 
 }

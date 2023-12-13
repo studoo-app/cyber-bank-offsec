@@ -16,7 +16,7 @@ RUN apt-get update \
      libxslt-dev \
      libssh-dev \
      symfony-cli \
-     unzip \
+     unzip
 
 RUN echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && \
     echo "fr_FR.UTF-8 UTF-8" >> /etc/locale.gen && \
@@ -32,10 +32,6 @@ RUN echo "Installation et configuration des extensions"
 RUN docker-php-ext-configure intl
 RUN docker-php-ext-install pdo pdo_mysql gd opcache intl zip calendar dom mbstring zip gd xsl
 RUN pecl install apcu pcov xdebug && docker-php-ext-enable apcu pcov xdebug
-
-#Installation et activation de amqp
-RUN echo "Installation et activation de l'extension Amqp"
-RUN pecl install amqp && docker-php-ext-enable amqp
 
 #Ouverture des droits de lecture, modification et execution
 RUN echo "Ouverture des droits de lecture, modification et execution"

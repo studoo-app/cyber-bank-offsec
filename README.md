@@ -21,8 +21,8 @@ Vous prendrez soin de ne pas éveiller les potentiels systèmes d'alertes mis en
 
 Afin de prouver vos actions,vous devrez fournir:
 - Fournir le FLAG justifiant d'un virement réussi
-- Fournir le FLAG justifiant d'une balance de compte supérieure à 10 000 €
-- une capture d'écran de votre compte fictif indiquant une balance supérieure à 10 000 €
+- Fournir le FLAG justifiant d'une balance de compte supérieure à 5 000 €
+  - une capture d'écran de votre compte fictif indiquant une balance supérieure à 5 000 €
 
 > ##### Identifiant du compte fictif
 > **login** : john.doe@mail.dev
@@ -35,14 +35,13 @@ Afin de prouver vos actions,vous devrez fournir:
 - Accès à la machine attacker `docker exec -it attacker /bin/bash`
 - Se positionner dans le dossier `/home/scripts`
 - Autoriser l'éxécution du script `install-tools.sh` -> `chmod +x install-tools.sh`
-- Executer le script `install-tools.sh` -> `./isntall-tools.sh`
+- Executer le script `install-tools.sh` -> `./install-tools.sh`
 
 > ##### Attention
 > Si vous ne parvenez pas a éxéuter le script d'installation, vous devez passez à l'installation manuelle des outils.
 > Pour ce faire, éxécuter les commandes situées dans le fichier `/scripts/install-tools.sh`.
 
 ### Configuration de la machine target-site
-- Se rendre dans le dossier `/app` du projet -> `docker exec -it target-site composer install`
 - Installer les dépendances composer -> `docker exec -it target-site composer install`
 - Création de la base -> `docker exec -it target-site symfony d:d:c`
 - Migraiton de la base -> `docker exec -it target-site symfony d:m:m`

@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello IntrusionDetectedController!{% endblock %}
+
+{% block body %}
+<div class="row">
+    <div class="col-md-10 offset-md-1">
+        <div class="alert alert-danger" role="alert">
+            <h4 class="alert-heading">Intrusion detected !</h4>
+            <p>
+                Our security systems have detected suspicious activity originating from your IP address.
+                As a result, your access to the application has been blocked and traces of your actions will be analyzed
+                by our security experts and transmitted if necessary to the competent authorities.
+            </p>
+            <hr>
+            <p class="mb-0">In summary, you have lost this challenge,
+                in order to start it again you must reinstall the database and empty the /var/log/ctf.log file</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

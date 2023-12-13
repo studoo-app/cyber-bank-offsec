@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Entity\Account;
 use App\Repository\UserRepository;
 use Psr\Log\LoggerInterface;
 
@@ -48,6 +49,23 @@ class CaptureTheFlagService
         });
     }
 
+    public function isIntrusionDetected(): bool
+    {
+        return count(array_filter(
+            $this->getFlags(),
+            function(array $log){
+                return $log["flag"]===CaptureTheFlagService::FLAG_INTRUSION_DETECTED;
+            })) > 0;
+    }
+
+    public function getShadowAccount(): ?Account
+    {
+         return $this->userRepository
+            ->findOneBy(["email"=>$_ENV["SHADOW_ACCOUNT_MAIL"]])
+            ->getAccount();
+    }
+
+    // PERSISTING
 
     private function save(array $log): void
     {
@@ -66,7 +84,8 @@ class CaptureTheFlagService
 
     }
 
-    private function triggerCTFs(array $log){
+    private function triggerCTFs(array $log): void
+    {
         if($log['type'] === "OPERATION"){
             $this->triggerFirstTransferCTF($log);
             $this->triggerTransferAmountObjectiveCTF();
@@ -110,15 +129,10 @@ class CaptureTheFlagService
         }
     }
 
-
     private function triggerFirstTransferCTF($log): void
     {
-        $shadowAccountNumber = $this->userRepository
-            ->findOneBy(["email"=>$_ENV["SHADOW_ACCOUNT_MAIL"]])
-            ->getAccount()
-            ->getNumber();
         if(
-            $shadowAccountNumber === $log["accountNumber"] && $log["balance"] === $log["amount"]
+            $this->getShadowAccount()->getNumber() === $log["accountNumber"] && $log["balance"] === $log["amount"]
         ) {
             $this->save([
                 "date"=>(new \DateTimeImmutable('now',new \DateTimeZone('Europe/Paris')))->format('d/m/Y H:i:s'),
@@ -129,11 +143,9 @@ class CaptureTheFlagService
 
     private function triggerTransferAmountObjectiveCTF()
     {
-        $shadowAccount = $this->userRepository
-            ->findOneBy(["email"=>$_ENV["SHADOW_ACCOUNT_MAIL"]])->getAccount();
 
         if(
-            $shadowAccount->getBalance() >= $_ENV["CTF_OBJECTIVE"] &&
+            $this->getShadowAccount()->getBalance() >= $_ENV["CTF_OBJECTIVE"] &&
             !$this->isFlagAlreadyExist(self::FLAG_AMOUNT_OBJECTIVE_COMPLETE)
         ){
             $this->save([
@@ -157,7 +169,6 @@ class CaptureTheFlagService
         $isLimitReached = count(array_filter($flags,function(array $item){
                 return $item['flag'] === self::FLAG_SUSPICIOUS_TRANSFER;
             })) === 5;
-
         if($isLimitReached){
             $this->save([
                 "date"=>(new \DateTimeImmutable('now',new \DateTimeZone('Europe/Paris')))->format('d/m/Y H:i:s'),

@@ -4,23 +4,46 @@ services:
   # CONTENEURS APPLICATIFS #
   ##########################
 
-  # attacker
+#  # attacker Debian 12
+#  attacker:
+#    container_name: attacker
+#    image: debian:12
+#    tty: true
+#    networks:
+#      - bank-offsec-external
+#    volumes:
+#      - ./docker/files:/home/documents
+#      - ./docker/scripts:/home/scripts
   attacker:
+    # https://docs.linuxserver.io/images/docker-rdesktop/#version-tags
+    #image: ubuntu-browser:8.12.23
+    image: lscr.io/linuxserver/webtop:ubuntu-kde
     container_name: attacker
-    image: debian:12
-    tty: true
-    networks:
-      - bank-offsec-external
+    security_opt:
+      - seccomp:unconfined #optional
+    environment:
+      - PUID=100O
+      - PGID=1000
+      - TZ=Europe/Paris
+      #- SUBFOLDER=/ #optional
+      - TITLE=Student-Ubuntu-KDE #optional
     volumes:
-      - ./docker/files:/home/documents
-      - ./docker/scripts:/home/scripts
+      - ./config:/config
+      - /var/run/docker.sock:/var/run/docker.sock #optional
+      - ./docker/files:/tmp/share/files
+      - ./docker/scripts:/tmp/share/scripts
+    ports:
+      - '3000:3000'
+      - '3001:3001'
+    #    devices:
+    #      - /dev/dri:/dev/dri #optional
+    shm_size: "4gb" #optional
+    restart: unless-stopped
 
   # target-site
   target-site:
     container_name: target-site
     build: ./docker/php
-    ports:
-      - "8000:80"
     volumes:
       - ./docker/php/vhosts:/etc/apache2/sites-enabled
       - ./app:/var/www

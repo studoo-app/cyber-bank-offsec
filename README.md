@@ -32,10 +32,10 @@ Afin de prouver vos actions,vous devrez fournir:
 ### Démarrage des conteneurs
 `docker compose up -d`
 ### Configuration de la machine attacker
-- Accès à la machine attacker `docker exec -it attacker /bin/bash`
-- Se positionner dans le dossier `/home/scripts`
+- Accès à la machine attacker `http://localhost:3000`
+- Ouvrir un terminal dans le dossier `/tmp/share/scripts`
 - Autoriser l'éxécution du script `install-tools.sh` -> `chmod +x install-tools.sh`
-- Executer le script `install-tools.sh` -> `./install-tools.sh`
+- Executer le script `install-tools.sh` -> `install-tools.sh`
 
 > ##### Attention
 > Si vous ne parvenez pas a éxéuter le script d'installation, vous devez passez à l'installation manuelle des outils.
@@ -43,8 +43,8 @@ Afin de prouver vos actions,vous devrez fournir:
 
 ### Configuration de la machine target-site
 - Installer les dépendances composer -> `docker exec -it target-site composer install`
-- Création de la base -> `docker exec -it target-site symfony d:d:c`
-- Migraiton de la base -> `docker exec -it target-site symfony d:m:m`
-- Déploiement du jeu de test -> `docker exec -it target-site symfony d:f:l`
+- Création de la base -> `docker exec -it target-site symfony console d:d:c`
+- Migraiton de la base -> `docker exec -it target-site symfony console d:m:m`
+- Déploiement du jeu de test -> `docker exec -it target-site symfony console d:f:l`
 - Suppression du fichier de tracking de progression -> `docker exec -it target-site cp /dev/null var/log/ctf.log`
 

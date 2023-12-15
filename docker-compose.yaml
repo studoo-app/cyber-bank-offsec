@@ -39,6 +39,8 @@ services:
     #      - /dev/dri:/dev/dri #optional
     shm_size: "4gb" #optional
     restart: unless-stopped
+    networks:
+      - bank-offsec-external
 
   # target-site
   target-site:

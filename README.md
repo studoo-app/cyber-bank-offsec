@@ -14,7 +14,7 @@ Vos premières phases de collectes d'informations ont fait apparaitre les points
  - Une remontée d'informations est effectuée quotidiennement à la maison mère basée en Suisse
 
 ## Missions
-Votre objectif est de réussir à vous transférez 10 000 € sur un compte souscrit à la banque sous une fausse identité
+Votre objectif est de réussir à vous transférez 5000 € sur un compte souscrit à la banque sous une fausse identité
 afin de procéder ultérieurement à un virement vers un compte intraçable ou diluer ce compte en crypto-monnaie.
 
 Vous prendrez soin de ne pas éveiller les potentiels systèmes d'alertes mis en place.
@@ -33,9 +33,9 @@ Afin de prouver vos actions,vous devrez fournir:
 `docker compose up -d`
 ### Configuration de la machine attacker
 - Accès à la machine attacker `http://localhost:3000`
-- Ouvrir un terminal dans le dossier `/tmp/share/scripts`
-- Autoriser l'éxécution du script `install-tools.sh` -> `chmod +x install-tools.sh`
-- Executer le script `install-tools.sh` -> `install-tools.sh`
+- Ouvrir un terminal et se rendre dans le dossier `/tmp/share/scripts`
+- Autoriser l'éxécution du script `install-tools.sh` -> `sudo chmod +x install-tools.sh`
+- Executer le script `install-tools.sh` -> `sudo bash install-tools.sh`
 
 > ##### Attention
 > Si vous ne parvenez pas a éxéuter le script d'installation, vous devez passez à l'installation manuelle des outils.
@@ -44,7 +44,11 @@ Afin de prouver vos actions,vous devrez fournir:
 ### Configuration de la machine target-site
 - Installer les dépendances composer -> `docker exec -it target-site composer install`
 - Création de la base -> `docker exec -it target-site symfony console d:d:c`
-- Migraiton de la base -> `docker exec -it target-site symfony console d:m:m`
+- Migration de la base -> `docker exec -it target-site symfony console d:m:m`
 - Déploiement du jeu de test -> `docker exec -it target-site symfony console d:f:l`
 - Suppression du fichier de tracking de progression -> `docker exec -it target-site cp /dev/null var/log/ctf.log`
 
+> ##### Attention
+> Les commandes ci-dessus sont éxécutables soit depuis le terminal de votre machine local ou depuis la console de la machine attacker.
+> Si elles sont éxécutées depuis le terminal de la machine attacker, elles devront être passées en mode sudo
+> Pour ce faire, éxécuter les commandes situées dans le fichier `/scripts/install-tools.sh`.

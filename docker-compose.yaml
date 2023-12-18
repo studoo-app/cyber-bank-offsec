@@ -46,8 +46,8 @@ services:
   target-site:
     container_name: target-site
     build: ./docker/php
-    ports:
-      - "8000:80"
+#    ports:
+#      - "8000:80"
     volumes:
       - ./docker/php/vhosts:/etc/apache2/sites-enabled
       - ./app:/var/www

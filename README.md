@@ -51,4 +51,3 @@ Afin de prouver vos actions,vous devrez fournir:
 > ##### Attention
 > Les commandes ci-dessus sont éxécutables soit depuis le terminal de votre machine local ou depuis la console de la machine attacker.
 > Si elles sont éxécutées depuis le terminal de la machine attacker, elles devront être passées en mode sudo
-> Pour ce faire, éxécuter les commandes situées dans le fichier `/scripts/install-tools.sh`.
